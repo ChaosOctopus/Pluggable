@@ -1,6 +1,7 @@
 package com.im.pluggable;
 
 import android.content.Intent;
+import android.util.Log;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -41,6 +42,24 @@ public class IActivityManagerProxy implements InvocationHandler {
             subIntent.putExtra("target_intent",intent);
             //用subIntent的值赋值给参数args，这样启动目标就变为了StubActivity
             args[index] = subIntent;
+        }
+        //代理Service
+        else if ("startService".equals(method.getName())){
+            Intent intent = null;
+            int index = 0;
+            for (int i = 0; i<args.length ; i++){
+                if (args[i] instanceof Intent){
+                    index = i;
+                    break;
+                }
+            }
+            intent = (Intent) args[index];
+            Intent proxyIntent = new Intent();
+            String packageName = "com.im.pluggable";
+            proxyIntent.setClassName(packageName,packageName+".ProxyService");
+            proxyIntent.putExtra(ProxyService.TARGET_SERVICE,intent.getComponent().getClassName());
+            args[index] = proxyIntent;
+            Log.e(TAG, "Hook成功" );
         }
         return method.invoke(mActivityManager,args);
     }

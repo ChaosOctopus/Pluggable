@@ -14,7 +14,7 @@ public class App extends Application {
             //用占坑activity 为了通过ASM校验
             HookHelper.hookAMS();
             //将占坑Ac替换为targetAc
-            HookHelper.hookHandler();
+//            HookHelper.hookHandler();
         }catch (Exception e){
             e.printStackTrace();
         }

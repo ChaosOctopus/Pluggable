@@ -19,6 +19,9 @@
         </activity>
         <activity android:name=".StubActivity" />
         <activity android:name=".TargetActivity"></activity>
+
+        <service android:name=".ProxyService" />
+        <service android:name=".TargetService"/>
     </application>
 
 </manifest>
